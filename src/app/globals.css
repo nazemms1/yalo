@@ -1,26 +1,96 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/*
+  YALO palette. The gold comes from the account's 💛 accents; bordeaux, olive and grey are the colourway names from its captions.
+  Confirm every value against the brand's logo before launch.
+*/
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /*
+    YALO palette: the brand yellow and white, plus one dark tone for text (no black).
+    No other colours are used in the interface; product swatches show the garments' own colours.
+  */
+  --color-gold: #ffcb05;
+  --color-ink: #0c0c0c;
+  --color-bone: #ffffff;
+  --color-paper: #ffffff;
+
+  --font-display: var(--font-anton), var(--font-cairo), sans-serif;
+  --animate-marquee: marquee 40s linear infinite;
+  --animate-spin-slow: spin-slow 26s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bone);
+  color: var(--color-ink);
+  font-family: var(--font-cairo), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Anton is condensed Latin display; Arabic headings use Cairo at its heaviest weight. */
+.font-display {
+  font-family: var(--font-anton), var(--font-cairo), sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+html:lang(ar) .font-display {
+  font-family: var(--font-cairo), var(--font-anton), sans-serif;
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.12;
+  text-transform: none;
+}
+
+.outline-display {
+  color: transparent;
+  -webkit-text-stroke: 2px currentColor;
+}
+
+/* Subtle paper grain over the whole page. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-marquee,
+  .animate-spin-slow {
+    animation: none;
+  }
 }
