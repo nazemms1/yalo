@@ -12,22 +12,29 @@ import { cn } from "@/lib/cn";
 
 const TONE = ["bg-gold text-ink", "bg-paper text-ink ring-1 ring-ink/10"];
 
+interface BranchProps {
+  /** The home page shows its own heading; the branches page already has one, so it turns this off. */
+  showHeader?: boolean;
+}
+
 /** Branches still being prepared: each card gives the area and landmark from the announcement. */
-export function Branch() {
+export function Branch({ showHeader = true }: BranchProps) {
   const { t, lang } = useLanguage();
 
   return (
     <section id="branch" className="px-5 py-16 md:px-12 md:py-24">
       <div className="mx-auto max-w-7xl">
-        <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-          <div>
-            <Eyebrow>{t.branch.eyebrow}</Eyebrow>
-            <Title className="mt-5">{t.branch.title}</Title>
-          </div>
-          <p className="max-w-md text-base leading-relaxed text-ink/75 md:text-lg">{t.branch.lead}</p>
-        </Reveal>
+        {showHeader && (
+          <Reveal className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <Eyebrow>{t.branch.eyebrow}</Eyebrow>
+              <Title className="mt-5">{t.branch.title}</Title>
+            </div>
+            <p className="max-w-md text-base leading-relaxed text-ink/75 md:text-lg">{t.branch.lead}</p>
+          </Reveal>
+        )}
 
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <div className={cn("grid gap-4 md:grid-cols-2", showHeader ? "mt-10" : "mt-0")}>
           {BRANCHES.map((branch, index) => {
             const photo = BRANCH_PHOTOS[branch.id];
             const city = lang === "ar" ? branch.city.ar : branch.city.en;
